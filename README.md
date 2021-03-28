@@ -1,6 +1,6 @@
 # scplayer
 
-## Overview [![GoDoc](https://godoc.org/github.com/mnhatbk20/scplayer?status.svg)](https://godoc.org/github.com/mnhatbk20/scplayer)
+## Overview [![GoDoc](https://pkg.go.dev/badge/github.com/mnhatbk20/scplayer?utm_source=godoc)](https://pkg.go.dev/github.com/mnhatbk20/scplayer)
 
 Play music from any public playlist on Soundcloud
 
