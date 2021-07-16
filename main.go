@@ -26,7 +26,6 @@ func main() {
 	fmt.Scanf("%s\n", &urlPlayList) 
 	fmt.Printf("Please Wait...\n")
 
-	// urlPlayList := "https://soundcloud.com/mnhatbk20/sets/yaaayaaayaaa"
 	url := "https://api-v2.soundcloud.com/resolve?url="
 	url = url + urlPlayList + "&client_id="+ clientID
 	resp, _ := http.Get(url)
@@ -38,9 +37,9 @@ func main() {
 		trackIDs =  append(trackIDs, track.ID)	
 	}
 
-	var mp3Tracks []string
+	var mediaURLTracks []string
 	var trackNames []string
-	var mp3URLs []string
+	var mp3URLTracks  []string
 	for _, trackID := range trackIDs {
 		url = "https://api-v2.soundcloud.com/tracks/"	
 		url =  url + strconv.Itoa(trackID) + "?client_id=" + clientID
@@ -48,26 +47,28 @@ func main() {
 		body, _ = ioutil.ReadAll(resp.Body)
 		var track player.Track
 		json.Unmarshal([]byte(string(body)), &track)
-		mp3Tracks = append(mp3Tracks, track.Media.Transcodings[1].URL )
+		mediaURLTracks = append(mediaURLTracks, track.Media.Transcodings[1].URL )
 		trackNames =  append(trackNames, track.Title)	
-		mp3URLs = append(mp3URLs, "" )
+		mp3URLTracks = append(mp3URLTracks , "" )
 	}
 	for i, trackName := range trackNames {
 		fmt.Printf("%d: %s\n", i+1, trackName)
 	}
 	fmt.Printf("Please select a song (Number): ")
-	fmt.Scanf("%d\n", &num) 
-	fmt.Printf("Please Wait...\n")
-	if (mp3URLs[num-1] == ""){
-		url = mp3Tracks[num-1]	+ "?client_id=" + clientID
-		resp, _ = http.Get(url)
-		body, _ = ioutil.ReadAll(resp.Body)
-		var stream player.Stream
-		json.Unmarshal([]byte(string(body)), &stream)
-		mp3URLs[num-1] = stream.URL
+	fmt.Scanf("%d\n", &num)
+	if num > len(mp3URLTracks) {
+		return
 	}
+	fmt.Printf("Please Wait...\n")
 
-	resp,_ = http.Get(mp3URLs[num-1])
+	url = mp3URLTracks[num-1]	+ "?client_id=" + clientID
+	resp, _ = http.Get(url)
+	body, _ = ioutil.ReadAll(resp.Body)
+	var stream player.Stream
+	json.Unmarshal([]byte(string(body)), &stream)
+	mp3URLTracks[num-1] = stream.URL
+	
+	resp,_ = http.Get(mp3URLTracks [num-1])
 	rs := httprs.NewHttpReadSeeker(resp)
 	defer rs.Close()
 
