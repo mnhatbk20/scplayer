@@ -15,17 +15,15 @@ func main() {
 	var userName string
 	var num int
 
-	fmt.Printf("Please Wait...\n")
-
 	clientID, err := player.GetClientID()
 	if err != nil {
 		return
 	}
 	// fmt.Printf("%s\n", clientID) 
-
 	fmt.Printf("Username: ")
 	fmt.Scanf("%s\n", &userName) 
-	fmt.Printf("Please Wait...\n")
+	fmt.Printf("---------------------------------\n")
+
 
 	url := "https://api-v2.soundcloud.com/resolve?url=https://soundcloud.com/" + userName
 	url = url + "&client_id="+ clientID
@@ -55,12 +53,12 @@ func main() {
 	for i, playlistName := range playlistNames {
 		fmt.Printf("%d: %s\n", i+1, playlistName)
 	}
+	fmt.Printf("---------------------------------\n")
 	fmt.Printf("Please select a playlist (Number): ")
 	fmt.Scanf("%d\n", &num)
 	if num > len(playlistIDs) {
 		return
 	}
-	fmt.Printf("Please Wait...\n")
 
 	url = "https://api-v2.soundcloud.com/playlists/" + strconv.Itoa(playlistIDs[num-1])
 	url =  url + "?client_id=" + clientID
@@ -89,15 +87,16 @@ func main() {
 		trackNames =  append(trackNames, track.Title)	
 		mp3URLTracks = append(mp3URLTracks , "" )
 	}
+
 	for i, trackName := range trackNames {
 		fmt.Printf("%d: %s\n", i+1, trackName)
 	}
+	fmt.Printf("---------------------------------\n")
 	fmt.Printf("Please select a song (Number): ")
 	fmt.Scanf("%d\n", &num)
 	if num > len(mediaURLTracks) {
 		return
 	}
-	fmt.Printf("Please Wait...\n")
 	
 	url = mediaURLTracks[num-1] + "?client_id=" + clientID
 	resp, _ = http.Get(url)
