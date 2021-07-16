@@ -11,7 +11,7 @@ import (
 func GetClientID() (id string, err error) {
 	respSoup, err := soup.Get("https://soundcloud.com/discover")
 	if err != nil {
-		return "null", errors.New("Error 01")
+		return "null", errors.New("Error01")
 	}
 	doc := soup.HTMLParse(respSoup)
 	scripts := doc.FindAll("script")
@@ -23,15 +23,15 @@ func GetClientID() (id string, err error) {
 	}
 	resp, err := http.Get(link)
 	if err != nil {
-		return "null", errors.New("Error 02")
+		return "null", errors.New("Error02")
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "null", errors.New("Error 03")
+		return "null", errors.New("Error03")
 	}
 	r, err := regexp.Compile("client_id")
 	if err != nil {
-		return "null", errors.New("Error 04")
+		return "null", errors.New("Error04")
 	}
 	k := r.FindStringIndex(string(body))[1]
 	s := string(body)[k+2 : k+34]
