@@ -1,11 +1,11 @@
 package main
 
 import(
+	"fmt"
+	"strconv"
 	"net/http"
 	"io/ioutil"
-	"fmt"
 	"encoding/json"
-	"strconv"
 	"github.com/jfbus/httprs"
 	"github.com/faiface/beep/mp3"
 	"github.com/mnhatbk20/scplayer/player"

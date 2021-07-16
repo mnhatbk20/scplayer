@@ -1,19 +1,14 @@
 package player
 
 import(
+	"fmt"
+	"unicode"
+	"os"
+	"time"
 	"github.com/gdamore/tcell"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
 	"github.com/faiface/beep/effects"
-	"github.com/anaskhan96/soup"
-	"fmt"
-	"unicode"
-	"regexp"
-	"errors"
-	"os"
-	"time"
-	"net/http"
-	"io/ioutil"
 )
 
 func drawTextLine(screen tcell.Screen, x, y int, s string, style tcell.Style) {
@@ -200,32 +195,3 @@ loop:
 	}
 }
 
-func GetClientID() (id string, err error) {
-	respSoup, err := soup.Get("https://soundcloud.com/discover")
-	if err != nil {
-		return "null" ,  errors.New("Error 01")
-	}
-	doc := soup.HTMLParse(respSoup)
-	scripts := doc.FindAll("script")
-	var link string
-	for i, script := range scripts {
-		if (i == (len(scripts) - 2)) {
-			link = script.Attrs()["src"]
-		}
-	}
-	resp, err := http.Get(link)
-	if err != nil {
-		return "null" ,  errors.New("Error 02")
-	}
-	body,	err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "null" ,  errors.New("Error 03")
-	}
-	r,	err := regexp.Compile("client_id")
-	if err != nil {
-		return "null" ,  errors.New("Error 04")
-	}
-	k:= r.FindStringIndex(string(body))[1]
-	s:= string(body)[k + 2: k + 34]
-	return s, nil
-}
