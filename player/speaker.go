@@ -27,7 +27,7 @@ type audioPanel struct {
 }
 
 func newAudioPanel(sampleRate beep.SampleRate, streamer beep.StreamSeeker) *audioPanel {
-	ctrl := &beep.Ctrl{Streamer: beep.Loop(1, streamer)}
+	ctrl := &beep.Ctrl{Streamer: beep.Loop(-1, streamer)}
 	resampler := beep.ResampleRatio(4, 1, ctrl)
 	volume := &effects.Volume{Streamer: resampler, Base: 2}
 	return &audioPanel{sampleRate, streamer, ctrl, resampler, volume}
